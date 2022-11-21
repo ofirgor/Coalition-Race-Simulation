@@ -4,27 +4,25 @@
 #include <algorithm>
 #include "SelectionPolicy.h"
 
-Agent::Agent(int agentId, int partyId, SelectionPolicy *selectionPolicy) : mAgentId(agentId), mPartyId(partyId), mSelectionPolicy(selectionPolicy)
+Agent::Agent(int agentId, int partyId, SelectionPolicy *selectionPolicy) : mAgentId(agentId), mPartyId(partyId), mSelectionPolicy(selectionPolicy), active(true), alreadyOffered()
 {
-    active = true;
     // You can change the implementation of the constructor, but not the signature!
 }
 
- Agent::Agent(const Agent& other)
+ Agent::Agent(const Agent& other):mAgentId(other.mAgentId), mPartyId(other.mPartyId), mSelectionPolicy(other.mSelectionPolicy->clone()), active(other.active), alreadyOffered()
  {
-     this->mAgentId = other.mAgentId;
-     this->mPartyId = other.mPartyId;
-     this->active = other.active;
-     this->mSelectionPolicy = other.mSelectionPolicy->clone();
  }
 
  Agent& Agent::operator=(const Agent& other)
  {
-     this->mAgentId = other.mAgentId;
-     this->mPartyId = other.mPartyId;
-     this->active = other.active;
-     this->mSelectionPolicy = other.mSelectionPolicy->clone();
-     delete other.mSelectionPolicy;
+    if(this != &other) {
+        if (mSelectionPolicy)
+            delete mSelectionPolicy;
+        this->mAgentId = other.mAgentId;
+        this->mPartyId = other.mPartyId;
+        this->active = other.active;
+        this->mSelectionPolicy = other.mSelectionPolicy->clone();
+    }
      return *this;
  }
  Agent:: ~Agent()
@@ -33,13 +31,21 @@ Agent::Agent(int agentId, int partyId, SelectionPolicy *selectionPolicy) : mAgen
         delete mSelectionPolicy;
 }
 
-Agent::Agent(Agent&& other)
+Agent::Agent(Agent&& other) noexcept: mAgentId(other.mAgentId), mPartyId(other.mPartyId), mSelectionPolicy(other.mSelectionPolicy), active(other.active), alreadyOffered()
 {
+    other.mSelectionPolicy = nullptr;
+}
+
+Agent& Agent::operator=(Agent&& other)
+{
+    if (mSelectionPolicy)
+        delete mSelectionPolicy;
     this->mAgentId = other.mAgentId;
     this->mPartyId = other.mPartyId;
     this->active = other.active;
     this->mSelectionPolicy = other.mSelectionPolicy;
     other.mSelectionPolicy = nullptr;
+    return *this;
 }
 
 int Agent::getId() const
@@ -83,7 +89,7 @@ bool Agent::offeredByCoalition(Simulation &s, int partyId)
 
 void Agent::step(Simulation &sim)
 {
-    if(this->active == true){
+    if(this->active){
         std::vector<int> neighbors = sim.getNeighbors(mPartyId);
         std::vector<int> validParties;
         std::vector<int>::iterator it;

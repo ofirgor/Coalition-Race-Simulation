@@ -22,5 +22,14 @@ int LastOfferJoinPolicy::join(vector<int> partyOffers, Simulation &s)
 {
     return partyOffers.back();
 }
+MandatesJoinPolicy* MandatesJoinPolicy::clone()
+{
+    return new MandatesJoinPolicy(*this);
+}
+
+LastOfferJoinPolicy* LastOfferJoinPolicy::clone()
+{
+    return new LastOfferJoinPolicy(*this);
+}
 
 

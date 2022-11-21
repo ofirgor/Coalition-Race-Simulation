@@ -1,7 +1,7 @@
 #include "Simulation.h"
 #include <vector>
 
-Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgents(agents) 
+Simulation::Simulation(Graph graph, vector<Agent> agents) : mGraph(graph), mAgents(agents), mCoalitions()
 {
     for(Agent& agent: mAgents){
         int agentId = agent.getId();
@@ -102,6 +102,7 @@ vector<int> Simulation::getOfferedParties(int agentId)
     for(Agent& agent: mAgents)
         if(agent.getId() == agentId)
             return agent.getAgentOffers();
+    return vector<int>{};
 }
 
 void Simulation::partyOffer(int party, int agent)

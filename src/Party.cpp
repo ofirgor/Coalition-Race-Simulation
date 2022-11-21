@@ -1,12 +1,50 @@
 #include "Party.h"
 #include "JoinPolicy.h"
 
-Party::Party(int id, string name, int mandates, JoinPolicy *jp) : mId(id), mName(name), mMandates(mandates), mJoinPolicy(jp), mState(Waiting)
+Party::Party(int id, string name, int mandates, JoinPolicy *jp) : mId(id), mName(name), mMandates(mandates), mJoinPolicy(jp), mState(Waiting), timer(0), partyOffers()
 {
-    timer = 0;
     // You can change the implementation of the constructor, but not the signature!
 }
 
+Party::Party(const Party& other): mId(other.mId), mName(other.mName), mMandates(other.mMandates), mJoinPolicy(other.mJoinPolicy->clone()), mState(other.mState), timer(other.timer), partyOffers()
+{
+}
+
+Party& Party::operator=(const Party& other)
+{
+    if (mJoinPolicy)
+        delete mJoinPolicy;
+    this->mId = other.mId;
+    this->mName = other.mName;
+    this->mMandates = other.mMandates;
+    this->mState = other.mState;
+    this->mJoinPolicy = other.mJoinPolicy->clone();
+    return *this;
+}
+
+Party::~Party()
+{
+    if(mJoinPolicy)
+        delete mJoinPolicy;
+}
+Party::Party(Party&& other) noexcept:mId(other.mId), mName(other.mName), mMandates(other.mMandates), mJoinPolicy(other.mJoinPolicy->clone()), mState(other.mState), timer(other.timer), partyOffers()
+{
+    other.mJoinPolicy = nullptr;
+}
+Party& Party::operator=(Party&& other)
+{
+    if(this != &other) {
+        if (mJoinPolicy)
+            delete mJoinPolicy;
+        this->mId = other.mId;
+        this->mName = other.mName;
+        this->mMandates = other.mMandates;
+        this->mState = other.mState;
+        this->mJoinPolicy = other.mJoinPolicy;
+        other.mJoinPolicy = nullptr;
+    }
+    return *this;
+}
 State Party::getState() const
 {
     return mState;

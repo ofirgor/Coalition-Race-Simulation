@@ -21,7 +21,8 @@ public:
     Party(const Party& other);
     Party& operator=(const Party& other);
     virtual ~Party();
-    Party(Party&& other);
+    Party(Party&& other) noexcept ;
+    Party& operator=(Party&& other);
     State getState() const;
     void setState(State state);
     int getMandates() const;

@@ -13,8 +13,8 @@ public:
     Agent(const Agent& other);
     Agent& operator=(const Agent& other);
     virtual ~Agent();
-    Agent(Agent&& other);
-    Agent& operator=(const Agent& other)
+    Agent(Agent&& other) noexcept ;
+    Agent& operator=(Agent&& other);
     int getPartyId() const;
     int getId() const;
     SelectionPolicy* getSp();
@@ -26,7 +26,7 @@ public:
 private:
     int mAgentId;
     int mPartyId;
-    bool active;
     SelectionPolicy *mSelectionPolicy;
+    bool active;
     std::vector<int> alreadyOffered;
 };

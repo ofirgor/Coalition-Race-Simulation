@@ -6,6 +6,7 @@ class Simulation;
 class SelectionPolicy
 {
 public:
+    virtual ~SelectionPolicy() = default;
     virtual int select(Simulation &s, vector<int> neighbors, int currParty)=0;
     virtual SelectionPolicy* clone() =0;
 };

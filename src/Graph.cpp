@@ -29,7 +29,7 @@ void Graph:: step(Simulation &s)
 vector<int> Graph::getNeighbors(int party)
 {
     std::vector<int> neighbors;
-    for (int i = 0; i < mEdges[party].size(); i++)
+    for (unsigned int i = 0; i < mEdges[party].size(); i++)
     {
        if (mEdges[i][party] != 0)
         {
