@@ -11,9 +11,11 @@ public:
     int getMandates(int partyId) const;
     int getEdgeWeight(int v1, int v2) const;
     int getNumVertices() const;
+    vector<int> getNeighbors(int partyId);
     const Party &getParty(int partyId) const;
     void step(Simulation &s);
-
+    void setPartyState(int partyId, int agent, State state);
+    bool isAllJoined() const;
 private:
     vector<Party> mVertices;
     vector<vector<int>> mEdges;

@@ -1,20 +1,26 @@
 #include "../include/JoinPolicy.h"
-#include "../include/Party.h"
-#include "../include/Simulation.h"
+#include "Simulation.h"
 #include <vector>
 
     
-int MandatesJoinPolicy::Join(vector<int> partyOffers, Simulation &simulate){
+int MandatesJoinPolicy::join(vector<int> partyOffers, Simulation &s)
+{
     int maxMandates = 0;
-    int maxPartyID = 0;
-    for(int p: partyOffers){
-        if(maxMandates < simulate.getParty(p).getMandates()){
-            maxMandates = simulate.getParty(p).getMandates();
-            maxPartyID = p;
-        }
+    int agentMax = 0;
+    int cMandates;
+    for(int agent: partyOffers){
+        cMandates =  s.getCoalitionMandates(s.getCoalition(agent));
+        if (maxMandates < cMandates)
+        {
+           maxMandates = cMandates;
+           agentMax = agent;
+        }  
     }
-    return maxPartyID;
+    return agentMax;
 }
-int LastOfferJoinPolicy::Join(vector<int> partyOffers, Simulation &simulate){
-    return partyOffers[0];
+int LastOfferJoinPolicy::join(vector<int> partyOffers, Simulation &s)
+{
+    return partyOffers.back();
 }
+
+

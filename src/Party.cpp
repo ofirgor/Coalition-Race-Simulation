@@ -3,6 +3,7 @@
 
 Party::Party(int id, string name, int mandates, JoinPolicy *jp) : mId(id), mName(name), mMandates(mandates), mJoinPolicy(jp), mState(Waiting)
 {
+    timer = 0;
     // You can change the implementation of the constructor, but not the signature!
 }
 
@@ -26,17 +27,25 @@ const string & Party::getName() const
     return mName;
 }
 
-void Party::step(Simulation &s)
+void Party::setPartyOffers(int agent)
 {
-    if (timer == 3)
-    {
-        int joinedParty;
-        joinedParty = mJoinPolicy->Join(partyOffers, s);
-        mState = Joined;
+    partyOffers.push_back(agent);
+} 
 
+void Party::step(Simulation &s)
+{ 
+    if (mState == CollectingOffers) {
+        timer += 1;
+        if (timer == 3) {
+            int agentToJoin;
+            agentToJoin = mJoinPolicy->join(partyOffers, s);
+            s.joinCoalition(agentToJoin, mId);
+            mState = Joined;
+            s.cloneAgent(agentToJoin,mId);
+        }
     }
-    if (mState == CollectingOffers)
-        timer +=1;
-    
-    // TODO: implement this method
+    if(mState == Waiting)
+        if(partyOffers.size() > 0) //received an offer
+            mState = CollectingOffers;
+
 }

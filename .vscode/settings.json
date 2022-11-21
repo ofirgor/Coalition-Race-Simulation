@@ -1,3 +1,9 @@
 {
-    "C_Cpp.errorSquiggles": "Disabled"
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/spl211/Desktop/SPL/SkeletonFiles",
+            "binaryPath": "/home/spl211/Desktop/SPL/SkeletonFiles/bin/cRace",
+            "binaryArgs": ["tests/01.json"]
+        }
+    ]
 }

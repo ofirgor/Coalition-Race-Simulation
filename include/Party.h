@@ -17,13 +17,18 @@ enum State
 class Party
 {
 public:
-    Party(int id, string name, int mandates, JoinPolicy *); 
-
+    Party(int id, string name, int mandates, JoinPolicy *);
+    Party(const Party& other);
+    Party& operator=(const Party& other);
+    virtual ~Party();
+    Party(Party&& other);
     State getState() const;
     void setState(State state);
     int getMandates() const;
+    void setPartyOffers(int agent);
     void step(Simulation &s);
     const string &getName() const;
+    
 
 private:
     int mId;
