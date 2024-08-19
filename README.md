@@ -30,20 +30,20 @@ This project simulates a political coalition formation process in a fictional co
 
 ## Compilation
 
-To compile the project, run: make
+To compile the project, run: make <br>
 This will create an executable named `cRace` in the `bin/` directory.
 
 ## Running the Simulation
 
-To run the simulation, use: ./bin/cRace <path_to_config_file>
-For example: ./bin/cRace config/01.json
+To run the simulation, use: ./bin/cRace <path_to_config_file> <br>
+For example: ./bin/cRace config/01.json <br>
 This will run the simulation and produce an output file with the same name as the input file but with a `.out` extension.
 
 ## Visualization
 
-To visualize the results, first ensure you have the required Python libraries installed: pip3 install networkx matplotlib
-Then run: python3 visualization.py <path_to_output_file>
-For example: python3 visualization.py 01.out
+To visualize the results, first ensure you have the required Python libraries installed: pip3 install networkx matplotlib <br>
+Then run: python3 visualization.py <path_to_output_file> <br>
+For example: python3 visualization.py 01.out <br>
 ## Testing
 
 To run tests, compare the output of your simulation with the provided expected output: diff -s <expected_output_file> <your_output_file>
